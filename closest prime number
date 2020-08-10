@@ -1,0 +1,57 @@
+/*
+Input:
+  6
+  14
+Output:
+  5
+  13
+*/
+
+
+#include<iostream>
+#include<vector>
+#include<math.h>
+#include<algorithm>
+
+#define N 10000000
+using namespace std;
+
+vector<int> searcharray;
+bool isprime[N];
+
+int main()
+{
+    memset(isprime, 1, sizeof(isprime));	
+    int sq = sqrt(N);
+    for(int i=2; i<=sq; i++)
+    {
+        if(isprime[i])
+        {
+            for(int j=i*i; j<N; j+=i)
+	 isprime[j] = 0;
+        }
+    }
+    for(int i=2; i<N; i++) 
+        if(isprime[i])
+            searcharray.push_back(i);
+    int tc;
+    cin>>tc;
+    //tc = 1;
+    while(tc--)
+    {
+        int n;
+        cin>>n;
+        auto it = lower_bound(searcharray.begin(), searcharray.end(), n);
+        int index = it - searcharray.begin();
+        if(searcharray[index] == n)
+	 cout<<n<<endl;
+        else
+        {
+            if(abs(searcharray[index] - n) >= abs(searcharray[index-1] - n))
+                cout<<searcharray[index-1]<<endl;
+            else
+                cout<<searcharray[index]<<endl;
+        }
+    }
+    return 0;
+}
