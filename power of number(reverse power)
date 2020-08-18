@@ -1,0 +1,66 @@
+/*
+Given a number N, let the reverse of the number be R. The task is to print the output of the Expression pow(N,R), where pow function represents N raised to power R.
+Note: As answers can be very large, print the result modulo 1000000007
+
+Example:
+Input:
+2
+2
+12
+
+Output:
+4
+864354781
+*/
+
+#include <iostream>
+#include<math.h>
+using namespace std;
+long long rev(long long n)
+{
+    long long rev_num = 0;
+     while(n > 0) 
+      { 
+        rev_num = rev_num*10 + n%10; 
+        n = n/10; 
+      } 
+      return rev_num;
+}
+long long power(long long n,long long rev)
+{
+    // Base cases 
+    if (rev == 0) 
+        return 1; 
+    if (rev == 1) 
+        return n; 
+  
+    // If rev is even, y = (n^(rev/2)) * (n^(rev/2)); 
+    long long y; 
+    if (rev % 2 == 0) { 
+        y = power(n, rev/2); 
+        y = (y * y) % 1000000007; 
+    } 
+  
+    // If rev is odd, y = (n^(rev/2)) * (n^(rev/2)) * n;  
+    else { 
+        y = ( power(n, rev/2) % 1000000007 );
+        y = ( ( (y * y) % 1000000007 ) * n ) % 1000000007;
+    } 
+  
+    return y; 
+}
+int main() {
+	//code
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	    long long n;
+	    cin>>n;
+	    
+        long long m=rev(n);
+        long long ans=power(n,m);
+	    cout<<ans%1000000007<<endl;
+	}
+	return 0;
+}
