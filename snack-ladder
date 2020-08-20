@@ -1,0 +1,72 @@
+#include<iostream>
+#include <queue>
+using namespace std;
+
+struct vertex {
+   int vert;
+   int dist;       // Distance of this vertex from source
+};
+
+int minDiceThrow(int move[], int cell) {
+   bool visited[cell];
+   for (int i = 0; i < cell; i++)
+      visited[i] = false;    //initially all cells are unvisited
+
+   queue<vertex> q;
+
+   visited[0] = true;       //initially starting from 0
+   vertex s = {0, 0};
+   q.push(s);             // Enqueue 0'th vertex
+
+   vertex qVert;
+   while (!q.empty()) {
+      qVert = q.front();
+      int v = qVert.vert;
+
+      if (v == cell-1)    //when v is the destination vertex
+         break;
+
+      q.pop();
+      for (int j=v+1; j<=(v+6) && j<cell; ++j) {    //for next 1 to 6 cells
+         if (!visited[j]) {
+            vertex newVert;
+            newVert.dist = (qVert.dist + 1);       //initially distance increased by 1
+            visited[j] = true;
+
+            if (move[j] != -1)
+               newVert.vert = move[j];       //if jth place have snake or ladder
+            else
+               newVert.vert = j;
+            q.push(newVert);
+         }
+      }
+   }
+   return qVert.dist;     //number of minimum dice throw
+}
+	
+int main() {
+	//code
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	    int n,a,b;
+	    cin>>n;
+	    //map<int,int> mymap;
+	    int board[30];
+		for (int i = 0; i <30; i++)
+			board[i] = -1;
+			
+	    for(int i=0;i<n;i++)
+	    {
+	        cin>>a;
+	        cin>>b;
+	        board[a-1]=b-1;
+	    }
+	    //cout<<MinimumDiceThrows(board, 30);
+	    cout<<minDiceThrow(board, 30);
+	   cout<<endl;
+	    
+	}
+	return 0;
+}
